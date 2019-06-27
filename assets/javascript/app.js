@@ -1,80 +1,79 @@
 var that = this;
-var questionIntervalId;
-var answerIntervalId;
 
 var triviaGame = {
     gameSettings : {
         Easy : {
             totalQuestions : 2,
-            secondsPerQuestion : 30,
-            secondsToDisplayAnswer : 7,
+            secondsPerQuestion : 20,
+            secondsPerAnswer : 7,
         },
         Medium : {
             totalQuestions : 3,
-            secondsPerQuestion : 20,
-            secondsToDisplayAnswer : 5,
+            secondsPerQuestion : 10,
+            secondsPerAnswer : 5,
         },
         Hard : {
             totalQuestions : 5,
-            secondsPerQuestion : 15,
-            secondsToDisplayAnswer : 3,
+            secondsPerQuestion : 5,
+            secondsPerAnswer : 3,
         }
     },
     gameVariables : {
         mode : "",
         questionAnswer : {} ,
-        totalQuestionsAsked: 0
+        totalQuestionsAsked: 0,
+        currentQuestionIndex: ""
     },
     Trivia : {
         Easy : {
             1 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 1",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             2 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 2",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             3 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 3",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             4 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 4",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             5 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 5",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             6 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 6",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             7 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 7",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             8 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 8",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             9 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 9",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
             10 : {
-                Question : "",
-                Options : ["","","",""],
+                Question : "Easy - Question 10",
+                Options : ["A","B","C","D"],
                 Answer : ""
             },
         },
@@ -187,19 +186,30 @@ var triviaGame = {
         Question : {
             secondsPer : 0,
             clockRunning : false,
-            interval : ""
+            interval : 0
         },
         Answer : {
             secondsPer : 0,
             clockRunning : false,
-            interval : ""
+            interval : 0
         }
     },
     startGame : function(userMode){
         this.gameVariables.mode = userMode;
-
+        this.questionPhase();
     },
-    resetGame : {
+    resetGame : function (){
+        this.gameVariables.mode = "";
+        this.gameVariables.questionAnswer = {};
+        this.gameVariables.totalQuestionsAsked = 0;
+        this.gameVariables.currentQuestionIndex = ""
+        this.Timers.Question.secondsPer = 0;
+        this.Timers.Question.clockRunning = false;
+        this.Timers.Question.interval = 0;
+        this.Timers.Answer.secondsPer = 0;
+        this.Timers.Answer.clockRunning = false;
+        this.Timers.Answer.interval = 0;
+        return true;
 
     },
     startTimer : function (Timer) {
@@ -211,40 +221,55 @@ var triviaGame = {
         }
     },
     clearTimer : function (Timer) {
-        clearInterval(function(){
-            that.triviaGame.countTimer(Timer)
-        });
+        clearInterval(this.Timers[Timer].interval);
         this.Timers[Timer].clockRunning = false;
+        this.Timers[Timer].secondsPer = 0;
     },
     countTimer : function(Timer){
-        if((this.Timers[Timer].secondsPer + 1) !== this.gameSettings[this.gameVariables.mode].secondsPerQuestion){
+        if((this.Timers[Timer].secondsPer + 1) !== this.gameSettings[this.gameVariables.mode]["secondsPer"+Timer]){
             this.Timers[Timer].secondsPer++
         } else {
             this.clearTimer(Timer);
+            if(Timer === "Question"){
+                this.answerPhase();
+            } else if ("Answer"){
+                this.questionPhase();
+            }
         }
     },
     getRandomNumber : function(){
-        var randNumber = math.Random() * (10 - 1) + 1
+        var randNumber = Math.trunc(Math.random() * (10 - 1) + 1)
         return randNumber;
     },
-    questionAndAnswer : function(){
-        var questionIndex = this.getRandomNumber();
-        this.printQuestion(questionIndex);
-        this.startTimer("Question");
-        while(!this.Timers["Question"].clockRunning){
+    questionPhase : function(){
+        if(this.gameVariables.totalQuestionsAsked === this.gameSettings[this.gameVariables.mode].totalQuestions){
+            this.endGameSequence();
+        } else {
+            this.gameVariables.currentQuestionIndex = (this.getRandomNumber()).toString();
+            this.printQuestion("Question");
+            this.startTimer("Question");
+            this.gameVariables.totalQuestionsAsked++
 
         }
-
-    
     },
-    printQuestion : function (questionIndex){
-        var actualQuestion = this.Trivia[this.gameVariables.mode]['"' + questionIndex + '"'].Question
-        var actualOptions = this.Trivia[this.gameVariables.mode]['"' + questionIndex + '"'].Options
-        $("#gameArea").text(actualQuestion + '      ' + actualOptions);
+    answerPhase : function (){
+        this.printQuestion("Answer");
+        this.startTimer("Answer");
     },
-    printAnswer : function (questionIndex){
-        var actualAnswer = this.Trivia[this.gameVariables.mode]['"' + questionIndex + '"'].answer
-        $("#gameArea").text(actualAnswer);
+    printQuestion : function (triviaObject){
+        var actualMessage = this.Trivia[this.gameVariables.mode][this.gameVariables.currentQuestionIndex][triviaObject]
+        if(triviaObject === "Question"){
+            var actualOptions = this.Trivia[this.gameVariables.mode][this.gameVariables.currentQuestionIndex].Options
+        }
+        if(actualOptions){
+            actualMessage += '     ' + actualOptions
+        }
+        $("#gameArea").text(actualMessage);
+    },
+    endGameSequence : function () {
+        console.log("Winner Winner")
+        $(".gameMode").show()
+        this.resetGame()
     }
 }
 
@@ -252,8 +277,13 @@ var triviaGame = {
 $(document).ready(function() {
 });
 
-$("#start").on("click", function(){
+$(".btn").on("click", function(){
+    $(".gameMode").hide()
     that.triviaGame.startGame($(this).attr("value"));
+})
+$(".reset").on("click", function(){
+    $(".gameMode").show()
+    that.triviaGame.resetGame();
 })
 
 
