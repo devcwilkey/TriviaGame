@@ -3,18 +3,18 @@ var that = this;
 var triviaGame = {
     gameSettings : {
         Easy : {
-            totalQuestions : 2,
+            totalQuestions : 5,
             secondsPerQuestion : 20,
             secondsPerAnswer : 7,
         },
         Medium : {
-            totalQuestions : 3,
+            totalQuestions : 7,
             secondsPerQuestion : 15,
             secondsPerAnswer : 5,
         },
         Hard : {
-            totalQuestions : 5,
-            secondsPerQuestion : 10,
+            totalQuestions : 9,
+            secondsPerQuestion : 5,
             secondsPerAnswer : 3,
         }
     },
