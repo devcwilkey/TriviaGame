@@ -153,7 +153,7 @@ var triviaGame = {
                 Answer : "Hearts"
             },
             5 : {
-                Question : "Of the options below Kills more people in the world than Sharks?",
+                Question : "Of the options below, '________' kill more people in the world than Sharks?",
                 Options : ["Buffalo","Fish","Coconuts","Cats"],
                 Answer : "Coconuts"
             },
@@ -205,7 +205,7 @@ var triviaGame = {
         if(this.Timers.resetGame.clockRunning){
             clearTimeout(this.Timers.resetGame.interval);
             this.Timers.resetGame.clockRunning = false;
-        }
+        };
         this.printScore();
         $(".gameCategory").hide();
         $(".gameMode").hide();
@@ -239,28 +239,27 @@ var triviaGame = {
                 that.triviaGame.countTimer(Timer);
             }, 1000);
             this.Timers[Timer].clockRunning = true;
-        }
+        };
     },
     clearTimer : function (Timer) {
-        console.log("Clearing Timer: "+ Timer)
         clearInterval(this.Timers[Timer].interval);
         this.Timers[Timer].clockRunning = false;
         this.Timers[Timer].secondsPer = 0;
     },
     countTimer : function(Timer){
-        this.Timers[Timer].secondsPer--
-        this.printClock(Timer,this.Timers[Timer].secondsPer)
+        this.Timers[Timer].secondsPer--;
+        this.printClock(Timer,this.Timers[Timer].secondsPer);
         if((this.Timers[Timer].secondsPer) === 0){
             this.clearTimer(Timer);
             if(Timer === "Question" || Timer === "resetGame"){
                 this.answerPhase();
             } else if ("Answer"){
                 this.questionPhase();
-            }
-        }
+            };
+        };
     },
     getRandomNumber : function(){
-        var randNumber = Math.trunc(Math.random() * (10 - 1) + 1)
+        var randNumber = Math.trunc(Math.random() * (10 - 1) + 1);
         return randNumber;
     },
     questionPhase : function(){
@@ -269,71 +268,65 @@ var triviaGame = {
         } else {
             if(this.gameVariables.questionAnswer.length !==0){
                 do {
-                    var tempRandomNumber = this.getRandomNumber().toString()
-                    console.log(tempRandomNumber)
+                    var tempRandomNumber = this.getRandomNumber().toString();
                 }
-                while (this.gameVariables.questionAnswer.indexOf(tempRandomNumber) !== -1)
+                while (this.gameVariables.questionAnswer.indexOf(tempRandomNumber) !== -1);
             } else {
-                var tempRandomNumber = this.getRandomNumber().toString()
-            }
-            this.gameVariables.questionAnswer.push(tempRandomNumber)            
-            
-            this.gameVariables.currentQuestionIndex = (tempRandomNumber)
+                var tempRandomNumber = this.getRandomNumber().toString();
+            };
+            this.gameVariables.questionAnswer.push(tempRandomNumber);
+            this.gameVariables.currentQuestionIndex = (tempRandomNumber);
             this.printQandA("Question");
             this.startTimer("Question");
-            $("#gameArea").show()
-            this.gameVariables.totalQuestionsAsked++
-
-        }
+            $("#gameArea").show();
+            this.gameVariables.totalQuestionsAsked++;
+        };
     },
     answerPhase : function (userSelection){
         if(userSelection){
             this.printQandA("Answer",userSelection);
         } else {
             this.printQandA("Answer");
-        }
+        };
         this.printScore();
         this.startTimer("Answer");
-        
     },
     printQandA : function (triviaObject,userSelection){
-        var numberofOptions = ""
-        var onScreenButton = ""
-        var onScreenMessage = ""
-        var userSelectedButton = ""
-        var onScreenDisplay = ""
+        var numberofOptions = "";
+        var onScreenButton = "";
+        var onScreenMessage = "";
+        var userSelectedButton = "";
+        var onScreenDisplay = "";
         /// Build User Question with Buttons
         if(triviaObject === "Question"){
-            $("#subGameArea").empty()
-            $("#answerButtons").empty()
-            var numberofOptions = this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Options.length
+            $("#subGameArea").empty();
+            $("#answerButtons").empty();
+            var numberofOptions = this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Options.length;
             for(i=0;i < numberofOptions; i++){
-                var onScreenButton = $("<btn>")
-                onScreenButton.attr("class","btn btn-primary p-2 m-2 gameOption")
-                onScreenButton.attr("value",this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Options[i])
-                onScreenButton.html("<span>"+this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Options[i]+"</span>")
+                var onScreenButton = $("<btn>");
+                onScreenButton.attr("class","btn btn-primary p-2 m-2 gameOption");
+                onScreenButton.attr("value",this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Options[i]);
+                onScreenButton.html("<span>"+this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Options[i]+"</span>");
                 $("#answerButtons").append(onScreenButton);
-            }
-
-            var onScreenMessage = $("<p>")
-            onScreenMessage.text(this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex][triviaObject])
-            var onScreenDisplay = $("<div>")
-            onScreenDisplay.attr("id","wrapper")
-            onScreenDisplay.attr("class","")
-            onScreenDisplay.append(onScreenMessage)
+            };
+            var onScreenMessage = $("<p>");
+            onScreenMessage.text(this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex][triviaObject]);
+            var onScreenDisplay = $("<div>");
+            onScreenDisplay.attr("id","wrapper");
+            onScreenDisplay.attr("class","");
+            onScreenDisplay.append(onScreenMessage);
             $("#subGameArea").html(onScreenDisplay);
         }
-
         /// Update Buttons to display the Correct Answer.
         if(triviaObject === "Answer"){
             if(!userSelection || !(userSelection === this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Answer)){
                 var userSelectedButton = document.querySelectorAll('btn[value="'+userSelection+'"]')[0];
-                $(userSelectedButton).attr("class","btn btn-danger p-2 m-2 gameOption")
-                this.gameVariables.incorrectAnswers++
-            }
+                $(userSelectedButton).attr("class","btn btn-danger p-2 m-2 gameOption");
+                this.gameVariables.incorrectAnswers++;
+            };
             var userSelectedButton = document.querySelectorAll('btn[value="'+this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Answer+'"]')[0];
-            $(userSelectedButton).attr("class","btn btn-success p-2 m-2 gameOption")
-        }
+            $(userSelectedButton).attr("class","btn btn-success p-2 m-2 gameOption");
+        };
     },
     printClock : function (Timer,remainingTime){
         var clockDesc = $("<dt>");
