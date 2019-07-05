@@ -329,46 +329,13 @@ var triviaGame = {
         };
     },
     printClock : function (Timer,remainingTime){
-        var clockDesc = $("<dt>");
-        clockDesc.attr("class","col-8");
-        clockDesc.text(Timer + " Timer: ");
-        var clockTime = $("<dd>");
-        clockTime.attr("class","col-4");
-        clockTime.text(remainingTime);
-        var fullClock = $("<dl>");
-        fullClock.attr("class","row");
-        fullClock.append(clockDesc);
-        fullClock.append(clockTime);
-        $("#timeClock").html(fullClock);
+        $("#timeClockDesc").text(Timer + " Timer: ");
+        $("#timeClock").text(remainingTime);
     },
     printScore : function(){
-        var correctlyAnsweredDesc = $("<dt>");
-        correctlyAnsweredDesc.attr("class","col-8");
-        correctlyAnsweredDesc.text("Correctly Answered: ");
-        var correctlyAnsweredScore = $("<dd>");
-        correctlyAnsweredScore.attr("class","col-4");
-        correctlyAnsweredScore.text(this.gameVariables.totalQuestionsAsked - this.gameVariables.incorrectAnswers);
-        var incorrectlyAnsweredDesc = $("<dt>");
-        incorrectlyAnsweredDesc.attr("class","col-8");
-        incorrectlyAnsweredDesc.text("incorrectly Answered: ");
-        var incorrectlyAnsweredScore = $("<dd>");
-        incorrectlyAnsweredScore.attr("class","col-4");
-        incorrectlyAnsweredScore.text((this.gameVariables.incorrectAnswers));
-        var totalQuestionsAskedDesc = $("<dt>");
-        totalQuestionsAskedDesc.attr("class","col-8");
-        totalQuestionsAskedDesc.text("Questions Remaining: ");
-        var totalQuestionsAskedScore = $("<dd>");
-        totalQuestionsAskedScore.attr("class","col-4");
-        totalQuestionsAskedScore.text((this.gameSettings[this.gameVariables.mode].totalQuestions - this.gameVariables.totalQuestionsAsked));
-        var fullScore = $("<dl>");
-        fullScore.attr("class","row");
-        fullScore.append(correctlyAnsweredDesc);
-        fullScore.append(correctlyAnsweredScore);
-        fullScore.append(incorrectlyAnsweredDesc);
-        fullScore.append(incorrectlyAnsweredScore);
-        fullScore.append(totalQuestionsAskedDesc);
-        fullScore.append(totalQuestionsAskedScore);
-        $("#currentScore").html(fullScore);
+        $("#correctScore").text(this.gameVariables.totalQuestionsAsked - this.gameVariables.incorrectAnswers);
+        $("#incorrectScore").text(this.gameVariables.incorrectAnswers);
+        $("#remainingTotal").text(this.gameSettings[this.gameVariables.mode].totalQuestions - this.gameVariables.totalQuestionsAsked);
     },
     endGameSequence : function () {
         $("#subGameArea").empty();

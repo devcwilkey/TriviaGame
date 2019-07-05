@@ -24,7 +24,7 @@
     <main>
         <div class="container">
             <div class="row">
-                <div class=" col-10 offset-1" id="gameSetup">
+                <div class="col-12 col-md-10 offset-md-1" id="gameSetup">
                     <select id="gameMode" name="gameMode" class="m-2 px-3 py-2 gameMode">
                         <option value="Easy" title="5 - Total Questions; 20 secs per Question; 7 secs per Answer">Difficulty: Easy</option>
                         <option value="Medium" selected="selected" title="7 - Total Questions; 15 secs per Question; 5 secs per Answer">Difficulty: Medium</option>
@@ -37,9 +37,9 @@
                 </div>
             </div>
             <div class="row" id="gameArea">
-                <div class="col-10 offset-1 mt-3 mb-3 border">
+                <div class="col-12 col-md-10 offset-md-1 mt-3 mb-3 border">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-12 border">
                             <div id="subGameArea" class="p-2">
                                 <!-- Questions and Answers (results) will Appear Here-->
                             </div>
@@ -47,13 +47,19 @@
                                 <!-- Answer options will Appear Here-->
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div id="timeClock" class="p-2">
-                                <!-- Put the Countdown Timer here Javascript-->
-                            </div>
-                            <div id="currentScore" class="p-2">
-                                <!-- Put the Countdown Timer here Javascript-->
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 border p-3">
+                            <dl class="row">
+                                <dt class="col-8 col-md-4 offset-md-2" id="timeClockDesc"></dt>
+                                <dd class="col-4" id="timeClock"></dd>
+                                <dt class="col-8 col-md-4 offset-md-2" id="correctDesc">Correctly Answered:</dt>
+                                <dd class="col-4" id="correctScore"></dd>
+                                <dt class="col-8 col-md-4 offset-md-2" id="incorrectDesc">Incorrectly Answered:</dt>
+                                <dd class="col-4" id="incorrectScore"></dd>
+                                <dt class="col-8 col-md-4 offset-md-2" id="remaingDesc">Questions Remaining:</dt>
+                                <dd class="col-4" id="remainingTotal"></dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
