@@ -284,7 +284,7 @@ var triviaGame = {
             this.startTimer("Question");
             $("#gameArea").show();
             this.gameVariables.totalQuestionsAsked++;
-            this.printScore();
+            $("#remainingTotal").text(this.gameSettings[this.gameVariables.mode].totalQuestions - this.gameVariables.totalQuestionsAsked);
         };
     },
     answerPhase : function (userSelection){
