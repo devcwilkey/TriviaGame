@@ -206,9 +206,11 @@ var triviaGame = {
             clearTimeout(this.Timers.resetGame.interval);
             this.Timers.resetGame.clockRunning = false;
         };
+        $("#subGameArea").empty();
         this.printScore();
         $(".gameCategory").hide();
         $(".gameMode").hide();
+        $("#QandA").show()
         $("#gameArea").show();
         this.questionPhase();
     },
@@ -227,7 +229,9 @@ var triviaGame = {
         this.Timers.Answer.interval = 0;
         $(".gameCategory").show();
         $(".gameMode").show();
-        $("#gameArea").hide();
+        $("#QandA").hide()
+        $("#timeClockDesc").text("Final Score:")
+        $("#timeClock").text("")
         return true;
 
     },
@@ -280,6 +284,7 @@ var triviaGame = {
             this.startTimer("Question");
             $("#gameArea").show();
             this.gameVariables.totalQuestionsAsked++;
+            this.printScore();
         };
     },
     answerPhase : function (userSelection){
@@ -323,6 +328,7 @@ var triviaGame = {
                 var userSelectedButton = document.querySelectorAll('btn[value="'+userSelection+'"]')[0];
                 $(userSelectedButton).attr("class","btn btn-danger p-2 m-2 gameOption");
                 this.gameVariables.incorrectAnswers++;
+                this.printScore();
             };
             var userSelectedButton = document.querySelectorAll('btn[value="'+this.Trivia[this.gameVariables.category][this.gameVariables.currentQuestionIndex].Answer+'"]')[0];
             $(userSelectedButton).attr("class","btn btn-success p-2 m-2 gameOption");
@@ -338,7 +344,6 @@ var triviaGame = {
         $("#remainingTotal").text(this.gameSettings[this.gameVariables.mode].totalQuestions - this.gameVariables.totalQuestionsAsked);
     },
     endGameSequence : function () {
-        $("#subGameArea").empty();
         $(".gameMode").show();
         this.resetGame();
         this.Timers.resetGame.interval = setTimeout(function(){
