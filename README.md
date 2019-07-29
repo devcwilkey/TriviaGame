@@ -30,6 +30,8 @@ Under the website links (above) click the Game link.
 - Adjust the Question Timer so it is larger and more visible.
 - If an Answer is not selected in Time; display a message as the user can click an answer just as the clock expires.
 - Add theming per Topic.
+- Stop the game after 2 Play through's if no User Input detected.
+
 
 ### Contributions:
 - Craig Wilkey [GitHub Profile](https://github.com/devcwilkey)
